@@ -21,6 +21,22 @@ const UserType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType",
     fields: {
+        //Get single user by id
+        getUser: {
+            type: UserType,
+            args: { id: { type: GraphQLID }},
+            resolve(parent, args)
+            {
+                for(let i = 0; i < userData.length; i++)
+                {
+                    if(userData[i].id == args.id)
+                    {
+                        return userData[i];
+                    }
+                }
+            }
+        },
+
         // Get all users
         getAllUsers: {
             type: new GraphQLList(UserType),
