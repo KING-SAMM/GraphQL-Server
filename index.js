@@ -30,9 +30,32 @@ const RootQuery = new GraphQLObjectType({
         }
     }
 })
+const Mutation = new GraphQLObjectType({
+    name: "Mutation",
+    fields: {
+        createUser: {
+            type: UserType,
+            args: {
+                firstname: { type: GraphQLString },
+                lastname: { type: GraphQLString },
+                email: { type: GraphQLString },
+                password: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                userData.push({
+                    id: userData.length + 1,
+                    firstname: args.firstname,
+                    lastname: args.lastname,
+                    email: args.email,
+                    password: args.password
+                })
+                return args
+            }
+        }
+    }
+})
 
-
-const schema = new GraphQLSchema({ query: RootQuery });
+const schema = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
 
 app.use('/graphql', graphqlHTTP({
     schema,
